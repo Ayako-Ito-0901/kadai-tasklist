@@ -11,12 +11,9 @@
 |
 */
 
-// 後にこれに戻るけど一旦削除する
-// Route::get('/', 'TasksController@index');
+// こちらに上書きした
+Route::get('/', 'TasksController@index');
 
-Route::get('/', function() {
-   return view('welcome'); 
-});
 
 
 // ユーザー登録用のルーティング
@@ -28,8 +25,14 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login.post');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
+// ユーザ機能
+Route::group(['middleware' => 'auth'], function () {
+Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
+Route::resource('tasks', 'TasksController', ['only' => ['store', 'destroy']]);
+});
 
-// ▼7つの基本ルーティングの省略形 削除する？
+
+// ▼7つの基本ルーティングの省略形 削除する？削除するとエラーになる
 Route::resource('tasks', 'TasksController');
 
 

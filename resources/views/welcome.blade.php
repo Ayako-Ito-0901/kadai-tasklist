@@ -2,7 +2,13 @@
 
 @section('content')
     @if (Auth::check())
-        {{ Auth::user()->name }}
+        
+        @if (count($tasks) > 0)
+            @include('tasks.tasks', ['tasks' => $tasks])
+        @else
+             {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-success']) !!}
+        @endif
+        
     @else
     
     <div class="center jumbotron">
